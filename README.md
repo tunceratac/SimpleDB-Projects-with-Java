@@ -1,6 +1,7 @@
 # SimpleDB Projects with Java
 
 <h2>Run the SimpleDB Engine as a Server</h2> 
+
 A. Create a run configuration for the server program.
 
 • Go to “Run Configurations” in the Eclipse Run menu. Add a new configuration to your
@@ -16,6 +17,7 @@ The folder for this database lives in the SimpleDBEngine project. Refresh the pr
 see it in the Eclipse project window.
 
 <h2>Run the Server-based Client Programs</h2> 
+
 Look at the programs in the network folder of the SimpleDBClients project.
 
 • While the server is running, run the CreateStudentDB and StudentMajor clients. They should print the same output as the above step.
@@ -26,6 +28,7 @@ Look at the programs in the network folder of the SimpleDBClients project.
 
 
 <h2>Run the SimpleIJ Client Demo</h2> 
+
 • Run the program SimpleIJ, which is in the “default package” folder for the SimpleDBClients project.
 
 • The first thing it will ask for is a connection. Enter the following string, which will establish a connection to the embedded database.
