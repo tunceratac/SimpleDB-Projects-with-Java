@@ -4,7 +4,7 @@ This assignment asks you implement two additional relational algebra operators t
 
 • The union operator takes two scans as input, both of which have the same schema. The output consists of the union of those records, without removing duplicates. The rename operator has several uses. An obvious, simple use is to change a field value to something more readable. For example, the following query calculates the name and major of each student. It renames the field DName to be Major, so that the schema of the output table is [SName, Major].
 
-<img src="https://url/to/img.png" alt="alt text" width="320" height="180">
+<img src="https://github.com/tunceratac/SimpleDB-Projects-with-Java/blob/main/Task-4/1.png" alt="alt text" width="320" height="180">
 
 Another use is to change the name of one field to be different from another field in order to join those fields together. For example, the following query calculates the students having the same major as student #1:
 
