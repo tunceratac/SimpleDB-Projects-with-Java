@@ -29,10 +29,18 @@ There is a test program Task2Test. It creates three transactions, each in their 
 Deliverables
 
 ● For Task 2.1
+
 ❖ LogRecord.java
-❖ NQCheckpoint.java ❖ RecoveryMgr.java
+
+❖ NQCheckpoint.java 
+
+❖ RecoveryMgr.java
 
 ● For Task 2.2
+
 ❖ Transaction.java
-❖ ConcurrencyMgr.java ❖ LockTable.java
+
+❖ ConcurrencyMgr.java 
+
+❖ LockTable.java
 
