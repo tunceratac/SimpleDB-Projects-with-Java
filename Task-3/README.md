@@ -1,115 +1,63 @@
-# SimpleDB Projects with Java
+<h3>Task 3.1</h3>
 
-<h2>Run the SimpleDB Engine as a Server</h2> 
+SimpleDB only knows how to read files in the forward direction. Add the following methods to the class TableScan:
 
-A. Create a run configuration for the server program.
+● the method previous(), which moves to the previous record in the file and returns false if there is no such record;
 
-• Go to “Run Configurations” in the Eclipse Run menu. Add a new configuration to your
-SimpleDBEngine project, called “SimpleDB Server”. In the field for the main class, enter “simpledb.server.StartServer”.
+● the method afterLast(), which positions the current record to be after the last record in the file.
 
-• By default, the server will use a database named “studentdb”. This is what I recommend. But if you want to use a differently-named database, use the Arguments tab in the configuration to enter the database name.
+To implement previous, you will need to search a record page backwards. To implement afterLast, you will need to position the current slot at the end of the page. For ease of grading, I would like you to do this by implementing the following methods in RecordPage:
 
-B. Run the SimpleDB Server configuration you just created. A console window should appear indicating that the SimpleDB server is running.
+● the method slots(), which returns the number of slots in the page;
 
-C. The server creates its database in a different location from the embedded client.
+● the method nextBefore(int slot), which returns the next used slot before the specified one, or -1 if no such slot exists.
 
-The folder for this database lives in the SimpleDBEngine project. Refresh the project to
-see it in the Eclipse project window.
+<h3>Task 3.2</h3>
 
-<h2>Run the Server-based Client Programs</h2> 
+Revise the SimpleDB record manager to handle null field values. To do so, you must add the following two public methods to TableScan:
 
-Look at the programs in the network folder of the SimpleDBClients project.
+● the method setNull(fldname), which sets the value of the specified field in the current record to null.
 
-• While the server is running, run the CreateStudentDB and StudentMajor clients. They should print the same output as the above step.
+● the method isNull(fldname), which determines if the value of the specified field in the current record is null.
 
-• Go to the console window for the server, and shut it down (by clicking on the red square near the top of the console window). Run StudentMajor again. You should get an error message. • Rerun the server, then run StudentMajor. It should now work.
+Note that the isNull method is the only way a client can know if a value is null. Suppose that you access the value of a integer field, say, by doing ts.getInt("GradYear"). There is no integer whose value can be treated as a null. Similarly, there is no special string value that can be treated as a null. (The string "null" is a legitimate non-null string.) That is why you need a special method to tell you whether the value is actually null, regardless of what getInt or getString returns. TableScan cannot directly handle null values. Instead, it must ask RecordPage to do the work. That is, its isNull and setNull methods should be implemented as follows:
 
-• Run the ChangeMajor network client. Now you have two slightly different studentdatabases. In the embedded database, Amy is a math major. In the network database, Amy is a drama major.
-
-
-<h2>Run the SimpleIJ Client Demo</h2> 
-
-• Run the program SimpleIJ, which is in the “default package” folder for the SimpleDBClients project.
-
-• The first thing it will ask for is a connection. Enter the following string, which will establish a connection to the embedded database.
-jdbc:simpledb:studentdb,
-
-• The client will now repeatedly ask you to enter SQL queries, one per line. Type the following query, which should print the name and majorid of all students. 
-
-select sname, majorid from student
-
-Note that Amy has majorid = 20 in this database. • Type “exit” to terminate the program.
-
-• Assuming that the server is still running, re-run SimpleIJ. This time, enter the following network connection string
-jdbc:simpledb://localhost
-
-This will connect you to the network database (If your server is not running, it will show an error message). Type the following query, and note that Amy has majorid = 30 in this database.
-
-select sname, majorid from student
-
-• If you know SQL, try entering some other queries into SimpleIJ. You can figure out the names of the tables and their fields by looking at Figure 1.1 of the text. Section 1.5 of the text describes the subset of SQL supported by SimpleDB. What happens when you try to execute an SQL statement that SimpleDB doesn't support?
-
-• Type “exit” to terminate the program.
-
-• Shut down the server (by clicking on the red square near the top of the console window).
-
-<h2>Create a Project for the SimpleDB Engine</h2>
-
-A. In Eclipse, create a new Java project named SimpleDBEngine.
-
-• You will need to specify the location. I recommend using the default location, which tells Eclipse to create a folder named SimpleDBEngine within its workspace.
-
-• You should specify "Create separate folders for sources and class files". Eclipse will create folders named src and bin within the SimpleDBEngine folder. • Click on the Finish button.
-
-B. Use the operating system to copy the entire downloaded simpledb folder to the folder SimpleDBEngine/src in your Eclipse workspace.
-
-• When you are done, the src folder should have one child folder, namely simpledb. The simpledb folder should have the child folders buffer, file, etc.
-
-C. In Eclipse, execute Project/refresh (F5) to compile all the source files. • The bin folder will now contain a class file for each source file.
-
-<h2>Create a Project for the Client Code</h2>
-
-A. In Eclipse, create a new Java project named SimpleDBClients.
-
-• Configure the project the same as the first two bullet points of part A above. • Instead of clicking "Finish", click "Next" to get to the Java Settings window.
-
-• Click on the Projects tab. Then click Add, and click the box for the SimpleDBEngine project. (Doing so adds the SimpleDB source code to the project's class path. Otherwise, the client code will not be able to resolve references to the SimpleDB classes.)
-
-• Now you can click the Finish button.
-
-B. Use the operating system to copy the contents of the downloaded simpleclient folder into the SimpleDBClients/src folder in your Eclipse workspace. Do not copy the enclosing simpleclients folder. The src folder should have four items: two folders and two files.
-
-C. In Eclipse, refresh the project as in the previous step C.
-
-<h2>Run the Embedded Client Programs</h2>
-
-A. Create the student database in embedded mode.
-
-• Look at the programs in the embedded folder of the SimpleDBClients project.
-
-• Run CreateStudentDB . It will create a database named studentdb.
-
-Possible problem: If you get “Java.sql.Exception: java.lang.NullPointerException” when you try to run CreateStudentDB, you can follow the steps below, it is likely caused by a language error (causing the characters to be corrupted). So, this causes errors while creating the tables.
-
-Go to Window > Preferences > Java > Installed JREs > select preferred JRE > Edit and then add the following to Default VM arguments:
- -Duser.language=en -Duser.country=US
+public boolean isNull(String fldname) {
+      return rp.isNull(currentslot, fldname);
+}
  
-• Refresh the project. You should see a folder for the studentdb database in the project window. Feel free to examine its contents.
+public void setNull(String fldname) {
+      rp.setNull(currentslot, fldname);
+}
 
-• Run StudentMajor. It should open a console window and display 9 records showing the names of the students and their majors.
+So your job is to implement isNull and setNull in RecordPage. How to set a field value to null? Since it is unreasonable to use a particular integer or string value to
+denote a null, you should use a one-bit flag. In particular, say that a record contains N fields. Suppose that you store N additional bits with each record and assign the value of the ith bit to be 1 if the value of the ith field is null and 0 if it is non-null. If you assume that N<32, then you can use the EMPTY/INUSE integer for this purpose. Bit 0 of this integer (counting from the right) denotes empty/inuse, as before. But now you can use the other bits to hold null-value information.
 
-• Run the ChangeMajor client, which will change the MajorId value of Amy’s record in the STUDENT table. Re-run the StudentMajor program to verify this.
+You will need to modify the Layout constructors so that they assign a bit position to each field in the record. (So for example if the schema has fields "A" and "B", then "A" might be assigned position 1 and "B" position 2.) Be careful to perform this assignment the same way in both constructors. Your Layout class should also implement the following new method, which will allow the record page to determine the bit position of any field:
+     
+     public int bitPosition(String fldname);
 
-• Run CreateStudentDB again. Technically, you shouldn’t do this, but do it anyway just for fun. Re-run StudentMajor. What happened to the database?
+The setNull and isNull methods of RecordPage will need to get and set individual bits of the empty/inuse integer. Since not all of you have learned how to do this, I have written the following two methods for you:
 
-B. Delete the database and re-create it.
+● The method getBitVal returns the value of a specified bit (from the right, and beginning at 0) of a given integer.
 
-• From the Eclipse client project, delete the folder containing the files for the studentdb database. You just destroyed the database!
+● The method setBitVal returns the integer you get by setting a specified bit (from the right and beginning at 0) of a specified integer to a specified flag (which will be either 0 or 1).
 
-• From Eclipse, re-run CreateStudentDB. You just re-created the database. Rerun StudentMajors to verify that it is back to normal.
+private int getBitVal(int val, int bitpos) {
+    return (val >> bitpos) % 2;
+}
 
-• If you want to see the database folder in the Eclipse project list, refresh the project.
+private int setBitVal(int val, int bitpos, int flag) {
+    int mask = (1 << bitpos);
+    if (flag == 0)
+        return val & ~mask;
+    else return val | mask;
+}
 
+You will also need to make changes to other methods in RecordPage. Look over the code carefully. All methods that access the empty/inuse flag will need to be adjusted. In addition, please ensure that the format method sets the fields of each record to be non-null, and that the setInt and setString methods also set their field to non-null.
 
-
+Deliverables
+❖ TableScan.java 
+❖ RecordPage.java 
+❖ Layout.java
 
