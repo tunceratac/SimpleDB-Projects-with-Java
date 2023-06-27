@@ -44,6 +44,9 @@ Note that the buffers in the above output are in seemingly random order because 
 There is a test program called Task1Test, which pins and unpins buffers, occasionally calling the buffer manager’s printStatus method. You should download it. It will help you debug your code.
 
 Deliverables
+
 ❖ Page.java
+
 ❖ Buffer.java
+
 ❖ BufferMgr.java
