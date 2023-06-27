@@ -34,8 +34,8 @@ So your job is to implement isNull and setNull in RecordPage. How to set a field
 denote a null, you should use a one-bit flag. In particular, say that a record contains N fields. Suppose that you store N additional bits with each record and assign the value of the ith bit to be 1 if the value of the ith field is null and 0 if it is non-null. If you assume that N<32, then you can use the EMPTY/INUSE integer for this purpose. Bit 0 of this integer (counting from the right) denotes empty/inuse, as before. But now you can use the other bits to hold null-value information.
 
 You will need to modify the Layout constructors so that they assign a bit position to each field in the record. (So for example if the schema has fields "A" and "B", then "A" might be assigned position 1 and "B" position 2.) Be careful to perform this assignment the same way in both constructors. Your Layout class should also implement the following new method, which will allow the record page to determine the bit position of any field:
-     
-     public int bitPosition(String fldname);
+
+public int bitPosition(String fldname);
 
 The setNull and isNull methods of RecordPage will need to get and set individual bits of the empty/inuse integer. Since not all of you have learned how to do this, I have written the following two methods for you:
 
