@@ -8,14 +8,14 @@ This assignment asks you implement two additional relational algebra operators t
 
 Another use is to change the name of one field to be different from another field in order to join those fields together. For example, the following query calculates the students having the same major as student #1:
 
-<img src="https://url/to/img.png" alt="alt text" width="320" height="180">
+<img src="https://github.com/tunceratac/SimpleDB-Projects-with-Java/blob/main/Task-4/2.png" alt="alt text" width="320" height="180">
 
 
 It is not crucial that you follow this query completely, but the idea is this: First select on the Student table to find the major Id of student #1. Then project on MajorId and rename that field as MajorOne. Then join this table with the Student table using the join predicate MajorId=MajorOne, and extract the student names.
 
 A third use of the rename operator is to change the field names from one schema to match those of another, in order to use the union operator. For example, the following query returns the names of all the professors and students in the database; the output table has a single field named PersonName:
 
-<img src="https://url/to/img.png" alt="alt text" width="320" height="180">
+<img src="https://github.com/tunceratac/SimpleDB-Projects-with-Java/blob/main/Task-4/3.png" alt="alt text" width="320" height="180">
 
 Your job is to write a Scan class for each of the rename and union operators. You can test your final code using my class HW4Test. For your information, executing HW4Test on my solution produces the following output:
 
