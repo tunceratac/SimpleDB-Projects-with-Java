@@ -57,7 +57,10 @@ private int setBitVal(int val, int bitpos, int flag) {
 You will also need to make changes to other methods in RecordPage. Look over the code carefully. All methods that access the empty/inuse flag will need to be adjusted. In addition, please ensure that the format method sets the fields of each record to be non-null, and that the setInt and setString methods also set their field to non-null.
 
 Deliverables
+
 ❖ TableScan.java 
+
 ❖ RecordPage.java 
+
 ❖ Layout.java
 
